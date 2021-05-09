@@ -1,16 +1,21 @@
 module.exports = (str, action, shift) => {
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    const inputStr = str.toLowerCase();
-    const maxshift = alphabet.length;
+    const alphabetS = 'abcdefghijklmnopqrstuvwxyz';
+    const alphabetL = alphabetS.toUpperCase();
+    const MAX_SHIFT = 26;
 
-    let step = shift % maxshift;
-    if (shift < 0) step += maxshift;
-    if (action == 'decode') step = -shift;
+    let step = shift % MAX_SHIFT;
+    if (shift < 0) step += MAX_SHIFT;
+    if (action == 'decode') step = MAX_SHIFT - step;
 
-    return [...inputStr]
+    return [...str]
                 .map(char => {
-                    const ind = alphabet.indexOf(char);
-                    return alphabet[(ind + step) % maxshift];
+                    if (char.match(/[a-z]/)) {
+                      return alphabetS[(alphabetS.indexOf(char) + step) % MAX_SHIFT];
+                    } else if (char.match(/[A-Z]/)) {
+                        return alphabetL[(alphabetL.indexOf(char) + step) % MAX_SHIFT];
+                    } else {
+                        return char;
+                    }
                  })
-                 .join('')
+                 .join('');
 }
